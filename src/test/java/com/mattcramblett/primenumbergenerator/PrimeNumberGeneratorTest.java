@@ -67,4 +67,10 @@ public class PrimeNumberGeneratorTest extends TestCase {
 		assertEquals(SMALL_PRIMES, this.classUnderTest.generate(102, -102));
 	}
 
+	@Test
+	public void testGenerateLargePrimes() {
+		assertEquals(Arrays.asList(2147483549, 2147483563, 2147483579, 2147483587, 2147483629, Integer.MAX_VALUE),
+				this.classUnderTest.generate(Integer.MAX_VALUE - 100, Integer.MAX_VALUE));
+	}
+
 }
