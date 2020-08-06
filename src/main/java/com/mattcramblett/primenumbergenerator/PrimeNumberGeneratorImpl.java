@@ -1,13 +1,15 @@
 package com.mattcramblett.primenumbergenerator;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 
 	@Override
 	public List<Integer> generate(final int startingValue, final int endingValue) {
-		return Arrays.asList();
+		return IntStream.rangeClosed(startingValue, endingValue).filter(this::isPrime).boxed()
+				.collect(Collectors.toList());
 	}
 
 	@Override

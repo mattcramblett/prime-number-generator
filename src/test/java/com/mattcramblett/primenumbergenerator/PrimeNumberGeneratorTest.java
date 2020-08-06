@@ -1,6 +1,7 @@
 package com.mattcramblett.primenumbergenerator;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -10,6 +11,9 @@ import junit.framework.TestCase;
 public class PrimeNumberGeneratorTest extends TestCase {
 
 	private final PrimeNumberGeneratorImpl classUnderTest = new PrimeNumberGeneratorImpl();
+
+	private static final List<Integer> SMALL_PRIMES = Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
+			47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101);
 
 	@Test
 	public void testIsPrimeFalseWithNonNaturalNumbers() {
@@ -29,8 +33,7 @@ public class PrimeNumberGeneratorTest extends TestCase {
 
 	@Test
 	public void testIsPrimeTrueWithSmallPrimes() {
-		Stream.of(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101)
-				.forEach(smallPrime -> assertTrue(this.classUnderTest.isPrime(smallPrime)));
+		SMALL_PRIMES.forEach(smallPrime -> assertTrue(this.classUnderTest.isPrime(smallPrime)));
 	}
 
 	@Test
@@ -52,6 +55,11 @@ public class PrimeNumberGeneratorTest extends TestCase {
 	@Test
 	public void testGeneratePrimesEmptyWithOutOfBoundsRange() {
 		assertEquals(Arrays.asList(), this.classUnderTest.generate(Integer.MIN_VALUE, -1));
+	}
+
+	@Test
+	public void testGenerateSmallPrimes() {
+		assertEquals(SMALL_PRIMES, this.classUnderTest.generate(0, 102));
 	}
 
 }
