@@ -16,4 +16,14 @@ public class PrimeNumberGeneratorTest extends TestCase {
 				.forEach(nonNaturalNum -> assertFalse(this.classUnderTest.isPrime(nonNaturalNum)));
 	}
 
+	@Test
+	public void testIsPrimeFalseWith0() {
+		assertFalse(this.classUnderTest.isPrime(0));
+	}
+
+	@Test
+	public void testIsPrimeFalseWith1() {
+		assertFalse(this.classUnderTest.isPrime(1));
+	}
+
 }
