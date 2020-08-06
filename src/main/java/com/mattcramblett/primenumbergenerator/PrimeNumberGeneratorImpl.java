@@ -12,7 +12,16 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 
 	@Override
 	public boolean isPrime(final int value) {
-		return value > 1;
+		if (value <= 1) {
+			return false;
+		}
+		for (int i = 2; i < value - 1; i++) {
+			if (value % i == 0) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }

@@ -26,4 +26,16 @@ public class PrimeNumberGeneratorTest extends TestCase {
 		assertFalse(this.classUnderTest.isPrime(1));
 	}
 
+	@Test
+	public void testIsPrimeTrueWithSmallPrimes() {
+		Stream.of(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101)
+				.forEach(smallPrime -> assertTrue(this.classUnderTest.isPrime(smallPrime)));
+	}
+
+	@Test
+	public void testIsPrimeFalseWithSmallComposites() {
+		Stream.of(4, 6, 12, 20, 24, 30, 42, 56, 64, 78, 82, 100)
+				.forEach(smallPrime -> assertFalse(this.classUnderTest.isPrime(smallPrime)));
+	}
+
 }
