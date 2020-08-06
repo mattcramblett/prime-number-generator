@@ -35,7 +35,17 @@ public class PrimeNumberGeneratorTest extends TestCase {
 	@Test
 	public void testIsPrimeFalseWithSmallComposites() {
 		Stream.of(4, 6, 12, 20, 24, 30, 42, 56, 64, 78, 82, 100)
-				.forEach(smallPrime -> assertFalse(this.classUnderTest.isPrime(smallPrime)));
+				.forEach(smallComp -> assertFalse(this.classUnderTest.isPrime(smallComp)));
+	}
+
+	@Test
+	public void testIsPrimeTrueWithLargePrime() {
+		assertTrue(this.classUnderTest.isPrime(Integer.MAX_VALUE));
+	}
+
+	@Test
+	public void testIsPrimeFalseWithLargeComposite() {
+		assertFalse(this.classUnderTest.isPrime(Integer.MAX_VALUE - 1));
 	}
 
 }
