@@ -1,5 +1,6 @@
 package com.mattcramblett.primenumbergenerator;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.junit.Test;
@@ -46,6 +47,11 @@ public class PrimeNumberGeneratorTest extends TestCase {
 	@Test
 	public void testIsPrimeFalseWithLargeComposite() {
 		assertFalse(this.classUnderTest.isPrime(Integer.MAX_VALUE - 1));
+	}
+
+	@Test
+	public void testGeneratePrimesEmptyWithOutOfBoundsRange() {
+		assertEquals(Arrays.asList(), this.classUnderTest.generate(Integer.MIN_VALUE, -1));
 	}
 
 }
