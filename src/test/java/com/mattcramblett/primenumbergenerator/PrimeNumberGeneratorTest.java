@@ -62,4 +62,9 @@ public class PrimeNumberGeneratorTest extends TestCase {
 		assertEquals(SMALL_PRIMES, this.classUnderTest.generate(0, 102));
 	}
 
+	@Test
+	public void testGenerateSmallPrimesWithInverseRange() {
+		assertEquals(SMALL_PRIMES, this.classUnderTest.generate(102, -102));
+	}
+
 }

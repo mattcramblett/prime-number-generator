@@ -8,8 +8,9 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 
 	@Override
 	public List<Integer> generate(final int startingValue, final int endingValue) {
-		return IntStream.rangeClosed(startingValue, endingValue).filter(this::isPrime).boxed()
-				.collect(Collectors.toList());
+		final IntStream intStream = startingValue > endingValue ? IntStream.rangeClosed(endingValue, startingValue)
+				: IntStream.rangeClosed(startingValue, endingValue);
+		return intStream.filter(this::isPrime).boxed().collect(Collectors.toList());
 	}
 
 	@Override
