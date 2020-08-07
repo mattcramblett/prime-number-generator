@@ -10,9 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Main integration test for the application
- */
 public class MainTest extends AbstractTest {
 
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -21,15 +18,13 @@ public class MainTest extends AbstractTest {
 	private final PrintStream originalErr = System.err;
 
 	@Before
-	public void before() throws Exception {
-		// Redirect standard output so tests can verify content
+	public void redirectStandardOutput() throws Exception {
 		System.setOut(new PrintStream(this.outContent));
 		System.setErr(new PrintStream(this.errContent));
 	}
 
 	@After
-	public void after() throws Exception {
-		// Restore standard output
+	public void restoreStandardOutput() throws Exception {
 		System.setOut(this.originalOut);
 		System.setErr(this.originalErr);
 	}
