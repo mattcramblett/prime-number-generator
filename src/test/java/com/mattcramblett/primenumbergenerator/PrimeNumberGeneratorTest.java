@@ -1,19 +1,17 @@
 package com.mattcramblett.primenumbergenerator;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class PrimeNumberGeneratorTest extends TestCase {
+public class PrimeNumberGeneratorTest extends AbstractTest {
 
 	private final PrimeNumberGeneratorImpl classUnderTest = new PrimeNumberGeneratorImpl();
-
-	private static final List<Integer> SMALL_PRIMES = Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43,
-			47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101);
 
 	@Test
 	public void testIsPrimeFalseWithNonNaturalNumbers() {
@@ -71,6 +69,11 @@ public class PrimeNumberGeneratorTest extends TestCase {
 	public void testGenerateLargePrimes() {
 		assertEquals(Arrays.asList(2147483549, 2147483563, 2147483579, 2147483587, 2147483629, Integer.MAX_VALUE),
 				this.classUnderTest.generate(Integer.MAX_VALUE - 100, Integer.MAX_VALUE));
+	}
+
+	@Test
+	public void testGeneratePrimesWithNarrowRange() {
+		assertEquals(Arrays.asList(7901, 7907, 7919), this.classUnderTest.generate(7900, 7920));
 	}
 
 }
