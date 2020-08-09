@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class PrimeNumberGeneratorTest extends AbstractTest {
@@ -65,10 +66,17 @@ public class PrimeNumberGeneratorTest extends AbstractTest {
 		assertEquals(SMALL_PRIMES, this.classUnderTest.generate(102, -102));
 	}
 
+	@Ignore("Covers edge case but is too slow for unit test")
 	@Test
-	public void testGenerateLargePrimes() {
+	public void testGenerateMaxPrimes() {
 		assertEquals(Arrays.asList(2147483549, 2147483563, 2147483579, 2147483587, 2147483629, Integer.MAX_VALUE),
 				this.classUnderTest.generate(Integer.MAX_VALUE - 100, Integer.MAX_VALUE));
+	}
+
+	@Test
+	public void testGenerateLargePrimes() {
+		assertEquals(Arrays.asList(99999931, 99999941, 99999959, 99999971, 99999989),
+				this.classUnderTest.generate(99999900, 100000001));
 	}
 
 	@Test
