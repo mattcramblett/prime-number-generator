@@ -66,4 +66,11 @@ public class SegmentTest extends AbstractTest {
 		assertEquals(expected, segment.streamFlagged().boxed().collect(Collectors.toList()));
 	}
 
+	@Test
+	public void testBoundsRetainValuesInArbitraryRange() {
+		final SegmentImpl segment = new SegmentImpl(100, 250);
+		assertEquals(100, segment.getLowerBound());
+		assertEquals(250, segment.getUpperBound());
+	}
+
 }

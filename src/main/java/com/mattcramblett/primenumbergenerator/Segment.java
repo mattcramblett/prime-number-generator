@@ -10,4 +10,8 @@ public interface Segment {
 
 	IntStream streamFlagged();
 
+	int getLowerBound();
+
+	int getUpperBound();
+
 }

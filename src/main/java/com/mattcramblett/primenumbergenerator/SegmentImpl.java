@@ -49,4 +49,13 @@ public class SegmentImpl implements Segment {
 		return this.flags.stream().filter(this.flags::get).map(x -> x < Integer.MAX_VALUE ? x + this.offset : x);
 	}
 
+	@Override
+	public int getLowerBound() {
+		return this.offset;
+	}
+
+	@Override
+	public int getUpperBound() {
+		return this.maxBitSetValue + this.offset;
+	}
 }
