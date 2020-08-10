@@ -27,7 +27,7 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 
 	@Override
 	public boolean isPrime(final int value) {
-		if (value <= 1) {
+		if (value <= FIRST_PRIME - 1) {
 			return false;
 		}
 		final int upperBound = (int) Math.sqrt(value) + 1;
