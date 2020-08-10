@@ -58,8 +58,12 @@ public class SegmentTest extends AbstractTest {
 
 	@Test
 	public void testSegmentValueWithMaxUpperBound() {
-		final SegmentImpl segment = new SegmentImpl(0, Integer.MAX_VALUE);
+		final SegmentImpl segment = new SegmentImpl(Integer.MAX_VALUE - 100, Integer.MAX_VALUE);
+		final List<Integer> expected = IntStream.range(Integer.MAX_VALUE - 100, Integer.MAX_VALUE).boxed()
+				.collect(Collectors.toList());
+
 		assertTrue(segment.get(Integer.MAX_VALUE - 1));
+		assertEquals(expected, segment.streamFlagged().boxed().collect(Collectors.toList()));
 	}
 
 }

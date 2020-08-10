@@ -9,13 +9,16 @@ public class SegmentImpl implements Segment {
 
 	private final int offset;
 
+	private final int maxBitSetValue;
+
 	/**
 	 * 
 	 * Creates a memory efficient mapping of numbers in a given range to boolean
-	 * values. Default value is true.
+	 * values. Default value is true. Does not allow for {@code Integer.MAX_VALUE}
+	 * due to overflow.
 	 * 
-	 * @param low  lower bound, inclusive
-	 * @param high upper bound, exclusive
+	 * @param low  inclusive lower bound
+	 * @param high exclusive upper bound
 	 */
 	public SegmentImpl(final int low, final int high) {
 		if (high < low) {
@@ -25,16 +28,10 @@ public class SegmentImpl implements Segment {
 			throw new IllegalArgumentException("bounds must be 0 or greater");
 		}
 		this.offset = low;
+		this.maxBitSetValue = high - low;
 		this.flags = new BitSet();
 
-		final int maxBitSetValue = high - low;
-
-		if (maxBitSetValue == Integer.MAX_VALUE) {
-			this.flags.set(0, maxBitSetValue, true);
-			this.flags.set(maxBitSetValue, true);
-		} else {
-			this.flags.set(0, maxBitSetValue, true);
-		}
+		this.flags.set(0, this.maxBitSetValue, true);
 	}
 
 	@Override
@@ -49,7 +46,7 @@ public class SegmentImpl implements Segment {
 
 	@Override
 	public IntStream streamFlagged() {
-		return this.flags.stream().filter(this.flags::get).map(x -> x + this.offset);
+		return this.flags.stream().filter(this.flags::get).map(x -> x < Integer.MAX_VALUE ? x + this.offset : x);
 	}
 
 }
