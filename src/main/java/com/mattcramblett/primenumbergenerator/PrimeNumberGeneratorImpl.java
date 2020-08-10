@@ -47,7 +47,6 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 			result.addAll(this.generateCompositesForNextSegment(segmentedRange, initialSegment));
 		}
 
-		this.accountForIntegerOverflowIfNeeded(result);
 		return result;
 	}
 
@@ -93,12 +92,6 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 			startingComposite += knownPrime;
 		}
 		return startingComposite;
-	}
-
-	private void accountForIntegerOverflowIfNeeded(final List<Integer> result) {
-		if (this.endingValue == Integer.MAX_VALUE) {
-			result.add(this.endingValue);
-		}
 	}
 
 }
