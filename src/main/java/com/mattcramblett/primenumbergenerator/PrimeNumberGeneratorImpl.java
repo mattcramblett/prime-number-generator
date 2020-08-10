@@ -35,7 +35,6 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 	}
 
 	private List<Integer> getPrimeNumbersInRange() {
-
 		final int segmentSize = (int) Math.sqrt(this.endingValue) + 1;
 		final Segment initialSegment = this.createSegmentOfPrimes(segmentSize);
 
@@ -45,28 +44,10 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 		final Iterator<Segment> segmentedRange = new SegmentedRangeImpl(this.endingValue, segmentSize);
 
 		while (segmentedRange.hasNext()) {
-
-			final Segment currentSegment = segmentedRange.next();
-
-			initialSegment.streamFlagged().forEach(knownPrime -> {
-
-				int startingComposite = (currentSegment.getLowerBound() / knownPrime) * knownPrime;
-
-				if (startingComposite < currentSegment.getLowerBound()) {
-					startingComposite += knownPrime;
-				}
-
-				for (int j = startingComposite; j > 0 && j < currentSegment.getUpperBound(); j += knownPrime) {
-					currentSegment.set(j, false);
-				}
-			});
-
-			result.addAll(this.convertSegmentToList(currentSegment));
+			result.addAll(this.generateCompositesForNextSegment(segmentedRange, initialSegment));
 		}
 
-		if (this.endingValue == Integer.MAX_VALUE) {
-			result.add(this.endingValue);
-		}
+		this.accountForIntegerOverflowIfNeeded(result);
 		return result;
 	}
 
@@ -87,6 +68,37 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 	private List<Integer> convertSegmentToList(final Segment segment) {
 		return segment.streamFlagged().filter(x -> x >= this.startingValue && x <= this.endingValue).boxed()
 				.collect(Collectors.toList());
+	}
+
+	private List<Integer> generateCompositesForNextSegment(final Iterator<Segment> segmentedRange,
+			final Segment knownPrimes) {
+		final Segment currentSegment = segmentedRange.next();
+
+		knownPrimes.streamFlagged().forEach(knownPrime -> {
+
+			final int startingComposite = this.getFirstCompositeInSegment(currentSegment, knownPrime);
+
+			for (int j = startingComposite; j > 0 && j < currentSegment.getUpperBound(); j += knownPrime) {
+				currentSegment.set(j, false);
+			}
+		});
+
+		return this.convertSegmentToList(currentSegment);
+	}
+
+	private int getFirstCompositeInSegment(final Segment segment, final int knownPrime) {
+		int startingComposite = (segment.getLowerBound() / knownPrime) * knownPrime;
+
+		if (startingComposite < segment.getLowerBound()) {
+			startingComposite += knownPrime;
+		}
+		return startingComposite;
+	}
+
+	private void accountForIntegerOverflowIfNeeded(final List<Integer> result) {
+		if (this.endingValue == Integer.MAX_VALUE) {
+			result.add(this.endingValue);
+		}
 	}
 
 }
