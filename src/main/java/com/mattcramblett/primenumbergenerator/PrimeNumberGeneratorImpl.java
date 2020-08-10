@@ -1,8 +1,8 @@
 package com.mattcramblett.primenumbergenerator;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -10,12 +10,19 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 
 	public static final int FIRST_PRIME = 2;
 
+	private int startingValue;
+
+	private int endingValue;
+
 	@Override
 	public List<Integer> generate(final int startingValue, final int endingValue) {
 		final int start = Math.max(0, startingValue);
 		final int end = Math.max(FIRST_PRIME, endingValue);
 
-		return this.getPrimeNumbersInRange(Math.min(start, end), Math.max(start, end));
+		this.startingValue = Math.min(start, end);
+		this.endingValue = Math.max(start, end);
+
+		return this.getPrimeNumbersInRange();
 	}
 
 	@Override
@@ -27,65 +34,59 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 		return !IntStream.range(FIRST_PRIME, upperBound).anyMatch(x -> value % x == 0);
 	}
 
-	private List<Integer> getPrimeNumbersInRange(final int startingValue, final int endingValue) {
+	private List<Integer> getPrimeNumbersInRange() {
 
-		final int segmentSize = (int) Math.sqrt(endingValue) + 1;
+		final int segmentSize = (int) Math.sqrt(this.endingValue) + 1;
 		final Segment initialSegment = this.createSegmentOfPrimes(segmentSize);
 
-		final AtomicInteger segmentBoundLow = new AtomicInteger(segmentSize);
-		final AtomicInteger segmentBoundHigh = new AtomicInteger(2 * segmentSize);
-
 		final List<Integer> result = new ArrayList<>();
-		result.addAll(initialSegment.streamFlagged().filter(x -> x >= startingValue && x <= endingValue).boxed()
-				.collect(Collectors.toList()));
+		result.addAll(this.convertSegmentToList(initialSegment));
 
-		while (segmentBoundLow.get() < endingValue && segmentBoundLow.get() > 0) {
+		final Iterator<Segment> segmentedRange = new SegmentedRangeImpl(this.endingValue, segmentSize);
 
-			if (segmentBoundHigh.get() > 0) {
-				segmentBoundHigh.set(Math.min(endingValue, segmentBoundHigh.get()));
-			} else {
-				segmentBoundHigh.set(endingValue);
-			}
+		while (segmentedRange.hasNext()) {
 
-			final Segment currentSegment = new SegmentImpl(segmentBoundLow.get(), segmentBoundHigh.get());
+			final Segment currentSegment = segmentedRange.next();
 
 			initialSegment.streamFlagged().forEach(knownPrime -> {
 
-				int startingComposite = (segmentBoundLow.get() / knownPrime) * knownPrime;
+				int startingComposite = (currentSegment.getLowerBound() / knownPrime) * knownPrime;
 
-				if (startingComposite < segmentBoundLow.get()) {
+				if (startingComposite < currentSegment.getLowerBound()) {
 					startingComposite += knownPrime;
 				}
 
-				for (int j = startingComposite; j > 0 && j < segmentBoundHigh.get(); j += knownPrime) {
+				for (int j = startingComposite; j > 0 && j < currentSegment.getUpperBound(); j += knownPrime) {
 					currentSegment.set(j, false);
 				}
 			});
 
-			result.addAll(currentSegment.streamFlagged().filter(x -> x >= 0)
-					.filter(x -> x >= startingValue && x <= endingValue).boxed().collect(Collectors.toList()));
-			segmentBoundLow.getAndUpdate(l -> l += segmentSize);
-			segmentBoundHigh.getAndUpdate(h -> h += segmentSize);
+			result.addAll(this.convertSegmentToList(currentSegment));
 		}
 
-		if (endingValue == Integer.MAX_VALUE) {
-			result.add(endingValue);
+		if (this.endingValue == Integer.MAX_VALUE) {
+			result.add(this.endingValue);
 		}
 		return result;
 	}
 
-	private Segment createSegmentOfPrimes(final int endingValue) {
-		final Segment segment = new SegmentImpl(FIRST_PRIME, endingValue);
+	private Segment createSegmentOfPrimes(final int maxBound) {
+		final Segment segment = new SegmentImpl(FIRST_PRIME, maxBound);
 
-		for (int i = FIRST_PRIME; i > 0 && i <= endingValue; i++) {
+		for (int i = FIRST_PRIME; i > 0 && i <= maxBound; i++) {
 			if (segment.get(i)) {
-				for (int j = i + i; j > 0 && j <= endingValue; j = j + i) {
+				for (int j = i + i; j > 0 && j <= maxBound; j = j + i) {
 					segment.set(j, false);
 				}
 			}
 		}
 
 		return segment;
+	}
+
+	private List<Integer> convertSegmentToList(final Segment segment) {
+		return segment.streamFlagged().filter(x -> x >= this.startingValue && x <= this.endingValue).boxed()
+				.collect(Collectors.toList());
 	}
 
 }
