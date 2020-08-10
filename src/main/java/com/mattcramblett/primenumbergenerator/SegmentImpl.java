@@ -18,7 +18,7 @@ public class SegmentImpl implements Segment {
 	 * due to overflow.
 	 * 
 	 * @param low  inclusive lower bound
-	 * @param high exclusive upper bound
+	 * @param high inclusive upper bound
 	 */
 	public SegmentImpl(final int low, final int high) {
 		if (high < low) {
@@ -31,7 +31,10 @@ public class SegmentImpl implements Segment {
 		this.maxBitSetValue = high - low;
 		this.flags = new BitSet();
 
-		this.flags.set(0, this.maxBitSetValue, true);
+		if (this.maxBitSetValue == Integer.MAX_VALUE) {
+			this.flags.set(0, this.maxBitSetValue, true);
+		}
+		this.flags.set(0, this.maxBitSetValue + 1, true);
 	}
 
 	@Override

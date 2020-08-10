@@ -84,4 +84,14 @@ public class PrimeNumberGeneratorTest extends AbstractTest {
 		assertEquals(Arrays.asList(7901, 7907, 7919), this.classUnderTest.generate(7900, 7920));
 	}
 
+	@Test
+	public void testGeneratePrimesWhereTwoIsOnlyResult() {
+		assertEquals(Arrays.asList(2), this.classUnderTest.generate(-1, 2));
+	}
+
+	@Test
+	public void testGeneratePrimesWherePrimeIsUpperBound() {
+		assertEquals(Arrays.asList(2, 3, 5, 7, 11), this.classUnderTest.generate(0, 11));
+	}
+
 }

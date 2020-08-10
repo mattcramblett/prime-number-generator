@@ -32,7 +32,7 @@ public class SegmentTest extends AbstractTest {
 	@Test
 	public void testSegmentInitiallyAllTrue() {
 		final SegmentImpl segment = new SegmentImpl(20, 50);
-		assertEquals(IntStream.range(20, 50).boxed().collect(Collectors.toList()),
+		assertEquals(IntStream.rangeClosed(20, 50).boxed().collect(Collectors.toList()),
 				segment.streamFlagged().boxed().collect(Collectors.toList()));
 	}
 
@@ -50,7 +50,7 @@ public class SegmentTest extends AbstractTest {
 		falseNumbers.forEach(n -> segment.set(n, false));
 
 		final List<Integer> expected = new ArrayList<>();
-		expected.addAll(IntStream.range(0, 45).boxed().collect(Collectors.toList()));
+		expected.addAll(IntStream.rangeClosed(0, 45).boxed().collect(Collectors.toList()));
 		expected.removeAll(falseNumbers);
 
 		assertEquals(expected, segment.streamFlagged().boxed().collect(Collectors.toList()));
@@ -59,7 +59,7 @@ public class SegmentTest extends AbstractTest {
 	@Test
 	public void testSegmentValueWithMaxUpperBound() {
 		final SegmentImpl segment = new SegmentImpl(Integer.MAX_VALUE - 100, Integer.MAX_VALUE);
-		final List<Integer> expected = IntStream.range(Integer.MAX_VALUE - 100, Integer.MAX_VALUE).boxed()
+		final List<Integer> expected = IntStream.rangeClosed(Integer.MAX_VALUE - 100, Integer.MAX_VALUE).boxed()
 				.collect(Collectors.toList());
 
 		assertTrue(segment.get(Integer.MAX_VALUE - 1));
@@ -67,7 +67,7 @@ public class SegmentTest extends AbstractTest {
 	}
 
 	@Test
-	public void testBoundsRetainValuesInArbitraryRange() {
+	public void testBoundsRetainValuesInArbitraryrangeClosed() {
 		final SegmentImpl segment = new SegmentImpl(100, 250);
 		assertEquals(100, segment.getLowerBound());
 		assertEquals(250, segment.getUpperBound());

@@ -17,7 +17,7 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 	@Override
 	public List<Integer> generate(final int startingValue, final int endingValue) {
 		final int start = Math.max(0, startingValue);
-		final int end = Math.max(FIRST_PRIME, endingValue);
+		final int end = Math.max(0, endingValue);
 
 		this.startingValue = Math.min(start, end);
 		this.endingValue = Math.max(start, end);
@@ -35,7 +35,7 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 	}
 
 	private List<Integer> getPrimeNumbersInRange() {
-		final int segmentSize = (int) Math.sqrt(this.endingValue) + 1;
+		final int segmentSize = Math.max(2, (int) Math.sqrt(this.endingValue) + 1);
 		final Segment initialSegment = this.createSegmentOfPrimes(segmentSize);
 
 		final List<Integer> result = new ArrayList<>();
@@ -78,7 +78,7 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 
 			final int startingComposite = this.getFirstCompositeInSegment(currentSegment, knownPrime);
 
-			for (int j = startingComposite; j > 0 && j < currentSegment.getUpperBound(); j += knownPrime) {
+			for (int j = startingComposite; j > 0 && j <= currentSegment.getUpperBound(); j += knownPrime) {
 				currentSegment.set(j, false);
 			}
 		});
