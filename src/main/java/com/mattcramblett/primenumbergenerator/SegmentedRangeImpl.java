@@ -18,7 +18,7 @@ public class SegmentedRangeImpl implements SegmentedRange {
 	 * @param endingValue the last value for segments
 	 * @param segmentSize the size for each segment
 	 */
-	public SegmentedRangeImpl(final int endingValue, final int segmentSize) {
+	protected SegmentedRangeImpl(final int endingValue, final int segmentSize) {
 		this.endingValue = endingValue;
 
 		this.segmentSize = segmentSize;
@@ -45,7 +45,7 @@ public class SegmentedRangeImpl implements SegmentedRange {
 			this.nextSegmentBoundHigh = this.endingValue;
 		}
 
-		final Segment nextSegment = new SegmentImpl(this.nextSegmentBoundLow, this.nextSegmentBoundHigh);
+		final Segment nextSegment = Segment.of(this.nextSegmentBoundLow, this.nextSegmentBoundHigh);
 
 		this.nextSegmentBoundLow += this.segmentSize;
 		this.nextSegmentBoundHigh += this.segmentSize;

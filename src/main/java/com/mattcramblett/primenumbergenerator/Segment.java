@@ -9,6 +9,17 @@ import java.util.stream.IntStream;
 public interface Segment {
 
 	/**
+	 * Create an instance of a Segment with inclusive bounds
+	 * 
+	 * @param low  the lower bound
+	 * @param high the upper bound
+	 * @return a segment in the given range
+	 */
+	public static Segment of(final int low, final int high) {
+		return new SegmentImpl(low, high);
+	}
+
+	/**
 	 * Returns the status of the number in this segment.
 	 * 
 	 * @param value the number to query

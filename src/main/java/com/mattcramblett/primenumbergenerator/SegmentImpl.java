@@ -20,7 +20,7 @@ public class SegmentImpl implements Segment {
 	 * @param low  inclusive lower bound
 	 * @param high inclusive upper bound
 	 */
-	public SegmentImpl(final int low, final int high) {
+	protected SegmentImpl(final int low, final int high) {
 		if (high < low) {
 			throw new IllegalArgumentException("low must be less than high");
 		}

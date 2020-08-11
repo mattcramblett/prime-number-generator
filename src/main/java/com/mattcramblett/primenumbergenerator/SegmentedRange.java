@@ -8,4 +8,13 @@ import java.util.Iterator;
  */
 public interface SegmentedRange extends Iterator<Segment> {
 
+	/**
+	 * Creates a utility for iterating over segments.
+	 * 
+	 * @param endingValue the last value for segments
+	 * @param segmentSize the size for each segment
+	 */
+	public static SegmentedRange of(final int endingValue, final int segmentSize) {
+		return new SegmentedRangeImpl(endingValue, segmentSize);
+	}
 }

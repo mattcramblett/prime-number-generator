@@ -4,6 +4,10 @@ import java.util.List;
 
 public interface PrimeNumberGenerator {
 
+	public static PrimeNumberGenerator of() {
+		return new PrimeNumberGeneratorImpl();
+	}
+
 	/**
 	 * Generates an ordered list of prime numbers within the specified range.
 	 * 
