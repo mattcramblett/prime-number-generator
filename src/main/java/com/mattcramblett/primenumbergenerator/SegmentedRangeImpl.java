@@ -1,9 +1,8 @@
 package com.mattcramblett.primenumbergenerator;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class SegmentedRangeImpl implements Iterator<Segment> {
+public class SegmentedRangeImpl implements SegmentedRange {
 
 	private final int endingValue;
 
@@ -13,6 +12,12 @@ public class SegmentedRangeImpl implements Iterator<Segment> {
 
 	private int nextSegmentBoundHigh;
 
+	/**
+	 * Creates a utility for iterating over segments.
+	 * 
+	 * @param endingValue the last value for segments
+	 * @param segmentSize the size for each segment
+	 */
 	public SegmentedRangeImpl(final int endingValue, final int segmentSize) {
 		this.endingValue = endingValue;
 
