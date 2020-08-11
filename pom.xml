@@ -21,6 +21,9 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M5</version>
+        <configuration>
+  			<argLine>-Xms512m -Xmx1024m</argLine>
+		</configuration>
       </plugin>
     </plugins>
   </build>
