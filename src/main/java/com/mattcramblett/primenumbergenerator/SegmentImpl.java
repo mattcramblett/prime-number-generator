@@ -14,8 +14,7 @@ public class SegmentImpl implements Segment {
 	/**
 	 * 
 	 * Creates a memory efficient mapping of numbers in a given range to boolean
-	 * values. Default value is true. Does not allow for {@code Integer.MAX_VALUE}
-	 * due to overflow.
+	 * values. Default value is true.
 	 * 
 	 * @param low  inclusive lower bound
 	 * @param high inclusive upper bound
@@ -33,8 +32,9 @@ public class SegmentImpl implements Segment {
 
 		if (this.maxBitSetValue == Integer.MAX_VALUE) {
 			this.flags.set(0, this.maxBitSetValue, true);
+		} else {
+			this.flags.set(0, this.maxBitSetValue + 1, true);
 		}
-		this.flags.set(0, this.maxBitSetValue + 1, true);
 	}
 
 	@Override

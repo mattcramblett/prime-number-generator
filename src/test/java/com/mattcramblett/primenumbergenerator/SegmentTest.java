@@ -73,4 +73,9 @@ public class SegmentTest extends AbstractTest {
 		assertEquals(250, segment.getUpperBound());
 	}
 
+	@Test
+	public void testSegmentHandlesMaxRangeWithoutOverflow() {
+		new SegmentImpl(0, Integer.MAX_VALUE);
+	}
+
 }
