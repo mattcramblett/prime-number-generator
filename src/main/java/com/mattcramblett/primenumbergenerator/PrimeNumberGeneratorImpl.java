@@ -30,7 +30,7 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 
 	@Override
 	public boolean isPrime(final int value) {
-		if (value <= FIRST_PRIME - 1) {
+		if (value < FIRST_PRIME) {
 			return false;
 		}
 		final int upperBound = (int) Math.sqrt(value) + 1;
@@ -38,16 +38,16 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 	}
 
 	private List<Integer> getPrimeNumbersInRange() {
-		final int segmentSize = Math.max(2, (int) Math.sqrt(this.endingValue) + 1);
-		final Segment initialSegment = this.createSegmentOfPrimes(segmentSize);
+		final int segmentSize = Math.max(FIRST_PRIME, (int) Math.sqrt(this.endingValue) + 1);
+		final Segment initialPrimes = this.createSegmentOfPrimes(segmentSize);
 
 		final List<Integer> result = new ArrayList<>();
-		result.addAll(this.convertSegmentToList(initialSegment));
+		result.addAll(this.convertSegmentToList(initialPrimes));
 
 		final Iterator<Segment> segmentedRange = SegmentedRange.of(this.endingValue, segmentSize);
 
 		while (segmentedRange.hasNext()) {
-			result.addAll(this.generateCompositesForNextSegment(segmentedRange, initialSegment));
+			result.addAll(this.getPrimesFromSegment(segmentedRange.next(), initialPrimes));
 		}
 
 		return result;
@@ -72,20 +72,18 @@ public class PrimeNumberGeneratorImpl implements PrimeNumberGenerator {
 				.collect(Collectors.toList());
 	}
 
-	private List<Integer> generateCompositesForNextSegment(final Iterator<Segment> segmentedRange,
-			final Segment knownPrimes) {
-		final Segment currentSegment = segmentedRange.next();
+	private List<Integer> getPrimesFromSegment(final Segment segment, final Segment knownPrimes) {
 
 		knownPrimes.streamFlagged().forEach(knownPrime -> {
 
-			final int startingComposite = this.getFirstCompositeInSegment(currentSegment, knownPrime);
+			final int startingComposite = this.getFirstCompositeInSegment(segment, knownPrime);
 
-			for (int j = startingComposite; j > 0 && j <= currentSegment.getUpperBound(); j += knownPrime) {
-				currentSegment.set(j, false);
+			for (int j = startingComposite; j > 0 && j <= segment.getUpperBound(); j += knownPrime) {
+				segment.set(j, false);
 			}
 		});
 
-		return this.convertSegmentToList(currentSegment);
+		return this.convertSegmentToList(segment);
 	}
 
 	private int getFirstCompositeInSegment(final Segment segment, final int knownPrime) {

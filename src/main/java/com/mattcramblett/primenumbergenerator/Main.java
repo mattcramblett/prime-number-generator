@@ -4,7 +4,6 @@ import java.util.List;
 
 /**
  * Entry point for using the system
- *
  */
 public class Main {
 
