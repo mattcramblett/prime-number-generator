@@ -45,7 +45,7 @@ The modification to this algorithm comes in when segmenting the range of numbers
 The disadvantage to this algorithm is that it always starts at 2 to create products. So if there is one number in the range, say 2.1 billion, then it goes from 2 until 2.1 billion in order to eliminate composites all the way up to the upper bound. So it would be no different than asking for a range of 0 to 2.1 billion. This is why I chose to leave `isPrime` as the trial division algorithm, since it scales fine for determining if a single number is prime. The `generate` method uses the segmented sieve algorithm because it is much more effective at ranges of numbers.
 
 ##### Important Notes
-* When running the program on the command line with Maven for an extremely wide range it is likely the Java heap space will not be enough, so it might be necessary to increase memory for the JVM. This can be changed in `pom.xml` file with the `-Xmx` argument. 
-* There is a test case in `PrimeNumberGeneratorTest` called `testGenerateMaxPrimes`. It generates up to the max possible value, but it takes about a minute on my local machine. I want to include it for completeness since it is an edge case, but it is rather slow for a unit test so it is currently ignored. It passes.
+* When running the program on the command line with Maven for an extremely wide range, it is likely the Java heap space will not be enough, so it might be necessary to increase memory for the JVM. This can be changed in `pom.xml` file with the `-Xmx` argument. 
+* There is a test case in `PrimeNumberGeneratorTest` called `testGenerateMaxPrimes`. It generates up to the max possible value, but it takes 24 seconds on my local machine. I want to include it for completeness since it is an edge case, but it is rather slow for a unit test so it is currently ignored. It passes.
 
 
